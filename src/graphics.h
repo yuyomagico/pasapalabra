@@ -1,11 +1,12 @@
-//Using SDL and standard IO
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 
 //Screen dimension constants
 #define SCREEN_WIDTH		640
-#define SCREEN_HEIGHT		480
+#define SCREEN_HEIGHT		528
+#define MAX_INPUT_LENGTH 200
 
 #ifndef CANTIDAD_LETRAS
 	#define CANTIDAD_LETRAS		26
@@ -16,7 +17,8 @@ enum EstadoPalabra
 {
 	PALABRA_PENDIENTE,
 	PALABRA_BUENA,
-	PALABRA_MALA
+	PALABRA_MALA,
+	PALABRA_ACTUAL
 };
 
 
@@ -27,11 +29,20 @@ int initSDL();
 int loadMedia();
 
 //Update GUI
-void updateGUI();
+int updateGUI();
 
 extern int estado_palabras[];// = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 //Frees media and shuts down SDL
 void closeSDL();
+void loadTextures();
+
+//INPUT STUFF
+int isReadyToEvaluate();
+void setReadyToEvaluate(int);
+char* getInputText();
+void updateTexts(char*, char*, char*, char*);
+extern char inputText1[MAX_INPUT_LENGTH];
+void initInput();
 
 //The window we'll be rendering to
 extern SDL_Window* gWindow;

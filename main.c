@@ -1,12 +1,11 @@
 //Ya que usan las mismas librerias definidas en "funciones_juego.h", no hay para que repetirlas aca.
-#include "./src/graphics.h"
-#include "./src/funciones_juego_1p.h"
+#include "src/graphics.h"
+#include "src/funciones_juego_1p.h"
 
 int main(){
-	int n,buenas=0,malas=0;
-    int index_palabra=0;
-	char palabra[20];
-	int t_pal=25;
+	int buenas=0,malas=0;//Status del juego
+    int index_palabra=0;//Palabra actual
+	int t_pal=26;//Total palabras
 
 	if(initSDL() == 0){
 		printf( "Failed to initialize SDL!\n" );
@@ -18,24 +17,40 @@ int main(){
 		return 1;
 	}
 
+	// Main Loop
 	do{
-		printf("1.Jugar\n");
-		printf("2.Salir\n");
-		filtrar_entrada_numerica(&n);
-		if(n==1){
-            int i=0;
-            do{
-				updateGUI();
-				system("clear");
-                printf("Nivel: %d\n", index_palabra+1);
-                printf("Buenas: %d. Malas: %d\n", buenas, malas);
-                mostrar_palabra(palabra, &buenas, &malas, &t_pal, &index_palabra, estado_palabras);
-            }while(index_palabra < CANTIDAD_LETRAS);
+		char buenasMalasLabel[40];
+		char letraActualLabel[40];
+		char descripcion[200];
+		sprintf(buenasMalasLabel, "Buenas: %d, Malas: %d", buenas, malas);
+		sprintf(letraActualLabel, "Letra Actual: %c", index_palabra+65);
+		sprintf(descripcion, "%s", getDescripcion(index_palabra));
+		//FIN JUEGO
+		if(buenas + malas == t_pal){
+			initInput();
+			if(buenas == t_pal){
+				updateTexts(buenasMalasLabel, letraActualLabel, "HAS GANADO!", inputText1);
+			}else{
+				char texto[200];
+				sprintf(texto, "Te han faltado %d palabras!", malas);
+				updateTexts(buenasMalasLabel, letraActualLabel, texto, inputText1);
+			}
+		}else{
+			estado_palabras[index_palabra] = PALABRA_ACTUAL;
 
-            if(buenas==CANTIDAD_LETRAS)printf("GANASTE WACHO QLO LOCO\n");
-            else printf("Te faltan sioh malo qlo\n");	
-			printf("Buenas: %d. Malas: %d\n", buenas, malas);
+			if(isReadyToEvaluate() == 1){
+
+				//getInputText y estado_palabras definidos en graphics.1.c
+				buena_mala(getInputText(),&buenas, &malas, &t_pal, index_palabra, estado_palabras);
+				setReadyToEvaluate(0);
+				initInput();
+				index_palabra = (index_palabra +1) % t_pal;
+
+			}else{
+				updateTexts(buenasMalasLabel, letraActualLabel, descripcion, inputText1);
+			}
 		}
-	}while(n!=2);
+	}while(updateGUI() == 0);
+	
 	return 0;
 }
