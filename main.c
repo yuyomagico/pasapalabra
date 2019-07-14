@@ -10,6 +10,7 @@ Uint32 lastTicksP2 = 0;
 Uint32 elapsedP1 = 0;
 Uint32 elapsedP2 = 0;
 Uint32 MAX_TIME = 120000;
+int playerWon = -1;
 
 int main(){
 	int buenas=0,malas=0;//Status del juego
@@ -90,7 +91,7 @@ int main(){
 				}
 			}
 		}
-		
+		if(playerWon == -1)
 		if(getTurnoPLayer() == 0){
 			sprintf(buenasMalasLabel, "Buenas: %d, Malas: %d", buenas, malas);
 			sprintf(letraActualLabel, "Letra Actual: %c", index_palabra+65);
@@ -100,7 +101,12 @@ int main(){
 				initInput();
 				if(buenas == t_pal){
 					updateTexts(buenasMalasLabel, letraActualLabel, "HAS GANADO!", inputText1);
-				}else{
+					playerWon = 0;
+				}else if (buenas > buenas2){
+					updateTexts(buenasMalasLabel, letraActualLabel, "HAS GANADO!", inputText1);
+					playerWon = 0;
+				}
+				else{
 					char texto[200];
 					sprintf(texto, "Te han faltado %d palabras!", malas);
 					updateTexts(buenasMalasLabel, letraActualLabel, texto, inputText1);
@@ -141,7 +147,12 @@ int main(){
 				initInput();
 				if(buenas2 == t_pal){
 					updateTexts(buenasMalasLabel, letraActualLabel, "HAS GANADO!", inputText1);
-				}else{
+					playerWon = 1;
+				}else if (buenas2 > buenas){
+					updateTexts(buenasMalasLabel, letraActualLabel, "HAS GANADO!", inputText1);
+					playerWon = 1;
+				}
+				else{
 					char texto[200];
 					sprintf(texto, "Te han faltado %d palabras!", malas);
 					updateTexts(buenasMalasLabel, letraActualLabel, texto, inputText1);
