@@ -31,14 +31,22 @@ int main(){
 				if(buenas2 + malas2 != t_pal)//si otro player aun esta en juego
 				{
 					estado_palabras[index_palabra] = PALABRA_PENDIENTE;//Palabra actual ya no es la activa
-					while(estado_palabras[index_palabra = (index_palabra +1) % t_pal] != PALABRA_PENDIENTE);
+					int next_index = (index_palabra +1) % t_pal;
+					while(estado_palabras[next_index] != PALABRA_PENDIENTE){
+						next_index = (next_index +1) % t_pal;
+					}
+					index_palabra = next_index;
 					changeTurnoPlayer();
 				}
 			}else{
 				if(buenas + malas != t_pal)//si otro player aun esta en juego
 				{
 					estado_palabras2[index_palabra2] = PALABRA_PENDIENTE;
-					while(estado_palabras2[index_palabra2 = (index_palabra2 +1) % t_pal] != PALABRA_PENDIENTE);
+					int next_index = (index_palabra2 +1) % t_pal;
+					while(estado_palabras2[next_index] != PALABRA_PENDIENTE){
+						next_index = (next_index +1) % t_pal;
+					}
+					index_palabra2 = next_index;
 					changeTurnoPlayer();
 				}
 			}
@@ -70,8 +78,13 @@ int main(){
 					}
 					setReadyToEvaluate(0);
 					initInput();
-					if(buenas + malas != t_pal)//si aun esta en juego
-						while(estado_palabras[index_palabra = (index_palabra +1) % t_pal] != PALABRA_PENDIENTE);
+					if(buenas + malas != t_pal){
+						int next_index = (index_palabra +1) % t_pal;
+						while(estado_palabras[next_index] != PALABRA_PENDIENTE){
+							next_index = (next_index +1) % t_pal;
+						}
+						index_palabra = next_index;
+					}
 
 				}else{
 					updateTexts(buenasMalasLabel, letraActualLabel, descripcion, inputText1);
@@ -103,8 +116,13 @@ int main(){
 					}
 					setReadyToEvaluate(0);
 					initInput();
-					if(buenas2 + malas2 != t_pal)//si aun esta en juego
-						while(estado_palabras2[index_palabra2 = (index_palabra2 +1) % t_pal] != PALABRA_PENDIENTE);
+					if(buenas2 + malas2 != t_pal){
+						int next_index = (index_palabra2 +1) % t_pal;
+						while(estado_palabras2[next_index] != PALABRA_PENDIENTE){
+							next_index = (next_index +1) % t_pal;
+						}
+						index_palabra2 = next_index;
+					}//si aun esta en juego
 				}else{
 					updateTexts(buenasMalasLabel, letraActualLabel, descripcion, inputText1);
 				}
