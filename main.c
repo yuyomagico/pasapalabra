@@ -9,7 +9,7 @@ Uint32 lastTicksP1 = 0;
 Uint32 lastTicksP2 = 0;
 Uint32 elapsedP1 = 0;
 Uint32 elapsedP2 = 0;
-Uint32 MAX_TIME = 12000;
+Uint32 MAX_TIME = 120000;
 
 int main(){
 	int buenas=0,malas=0;//Status del juego

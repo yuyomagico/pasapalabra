@@ -1,7 +1,7 @@
 //Textos
 char* palabras[CANTIDAD_LETRAS]={"arreglo", "byte", "compilador", "double", "estructura", "float",
  "gigabyte", "hardware", "int", "java", "kilobyte", "lag", "malware", "navegador",
-  "octal", "password", "qwerty", "ram", "stack", "teclado", "ubuntu", "variable", "web", "xml", "youtube", "zip"};
+  "octal", "password", "qwerty", "ram", "stack", "teclado", "ubuntu", "variable", "web", "x", "youtube", "zip"};
 
 char* descripciones[CANTIDAD_LETRAS]={"Coleccion de elementos del mismo tipo ordenados de manera secuencial", 
 "Unidad de informacion compuesta generalmente de 8 bits",
@@ -24,16 +24,17 @@ char* descripciones[CANTIDAD_LETRAS]={"Coleccion de elementos del mismo tipo ord
 "Estructura de datos usada para almacenar objetos",
 "Dispositivo de entrada de datos al computador",
 "Distribucion de linux",
-"Espacio de almacenamiento de variables locales en Memoria",
+"Estructura de programacion que contiene datos",
 "Se conoce como World Wide Web",
-"Formato de escritura de objetos en forma de texto",
+"Indicador de extendido",
 "Sitio web que permite compartir videos",
-"Formato de compresion"};
+"Archivo comprimido"};
 
+//Textos
 char* palabras2[CANTIDAD_LETRAS]={"arreglo", "byte", "compilador", "double", "estructura", "float",
  "gigabyte", "hardware", "int", "java", "kilobyte", "lag", "malware", "navegador",
-  "octal", "password", "qwerty", "ram", "stack", "teclado", "ubuntu", "variable", "web", "xml", "youtube", "zip"};
-  
+  "octal", "password", "qwerty", "ram", "stack", "teclado", "ubuntu", "variable", "web", "x", "youtube", "zip"};
+
 char* descripciones2[CANTIDAD_LETRAS]={"Coleccion de elementos del mismo tipo ordenados de manera secuencial", 
 "Unidad de informacion compuesta generalmente de 8 bits",
 "Que compila",
@@ -55,8 +56,8 @@ char* descripciones2[CANTIDAD_LETRAS]={"Coleccion de elementos del mismo tipo or
 "Estructura de datos usada para almacenar objetos",
 "Dispositivo de entrada de datos al computador",
 "Distribucion de linux",
-"Espacio de almacenamiento de variables locales en Memoria",
+"Estructura de programacion que contiene datos",
 "Se conoce como World Wide Web",
-"Formato de escritura de objetos en forma de texto",
+"Indicador de extendido",
 "Sitio web que permite compartir videos",
-"Formato de compresion"};
+"Archivo comprimido"};
