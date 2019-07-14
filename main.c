@@ -5,6 +5,8 @@
 int main(){
 	int buenas=0,malas=0;//Status del juego
     int index_palabra=0;//Palabra actual
+	int buenas2=0,malas2=0;//Status del juego
+    int index_palabra2=0;//Palabra actual
 	int t_pal=26;//Total palabras
 
 	if(initSDL() == 0){
@@ -22,32 +24,90 @@ int main(){
 		char buenasMalasLabel[40];
 		char letraActualLabel[40];
 		char descripcion[200];
-		sprintf(buenasMalasLabel, "Buenas: %d, Malas: %d", buenas, malas);
-		sprintf(letraActualLabel, "Letra Actual: %c", index_palabra+65);
-		sprintf(descripcion, "%s", getDescripcion(index_palabra));
-		//FIN JUEGO
-		if(buenas + malas == t_pal){
-			initInput();
-			if(buenas == t_pal){
-				updateTexts(buenasMalasLabel, letraActualLabel, "HAS GANADO!", inputText1);
+		//Revisar si el jugador hizo paso
+		if(getPlayerPassed() == 1){
+			setPlayerPassed(0);
+			if(getTurnoPLayer() == 0){
+				if(buenas2 + malas2 != t_pal)//si otro player aun esta en juego
+				{
+					estado_palabras[index_palabra] = PALABRA_PENDIENTE;//Palabra actual ya no es la activa
+					while(estado_palabras[index_palabra = (index_palabra +1) % t_pal] != PALABRA_PENDIENTE);
+					changeTurnoPlayer();
+				}
 			}else{
-				char texto[200];
-				sprintf(texto, "Te han faltado %d palabras!", malas);
-				updateTexts(buenasMalasLabel, letraActualLabel, texto, inputText1);
+				if(buenas + malas != t_pal)//si otro player aun esta en juego
+				{
+					estado_palabras2[index_palabra2] = PALABRA_PENDIENTE;
+					while(estado_palabras2[index_palabra2 = (index_palabra2 +1) % t_pal] != PALABRA_PENDIENTE);
+					changeTurnoPlayer();
+				}
+			}
+		}
+		
+		if(getTurnoPLayer() == 0){
+			sprintf(buenasMalasLabel, "Buenas: %d, Malas: %d", buenas, malas);
+			sprintf(letraActualLabel, "Letra Actual: %c", index_palabra+65);
+			sprintf(descripcion, "%s", getDescripcion(index_palabra));
+			//CHECK FIN JUEGO PX
+			if(buenas + malas == t_pal){
+				initInput();
+				if(buenas == t_pal){
+					updateTexts(buenasMalasLabel, letraActualLabel, "HAS GANADO!", inputText1);
+				}else{
+					char texto[200];
+					sprintf(texto, "Te han faltado %d palabras!", malas);
+					updateTexts(buenasMalasLabel, letraActualLabel, texto, inputText1);
+				}
+			}else{
+				estado_palabras[index_palabra] = PALABRA_ACTUAL;
+
+				if(isReadyToEvaluate() == 1){
+
+					//getInputText y estado_palabras definidos en graphics.1.c
+					if(buena_mala(getInputText(),&buenas, &malas, &t_pal, index_palabra, estado_palabras) != 0){
+						if(buenas2 + malas2 != t_pal)//check player 2
+							changeTurnoPlayer();
+					}
+					setReadyToEvaluate(0);
+					initInput();
+					if(buenas + malas != t_pal)//si aun esta en juego
+						while(estado_palabras[index_palabra = (index_palabra +1) % t_pal] != PALABRA_PENDIENTE);
+
+				}else{
+					updateTexts(buenasMalasLabel, letraActualLabel, descripcion, inputText1);
+				}
 			}
 		}else{
-			estado_palabras[index_palabra] = PALABRA_ACTUAL;
-
-			if(isReadyToEvaluate() == 1){
-
-				//getInputText y estado_palabras definidos en graphics.1.c
-				buena_mala(getInputText(),&buenas, &malas, &t_pal, index_palabra, estado_palabras);
-				setReadyToEvaluate(0);
+			sprintf(buenasMalasLabel, "Buenas: %d, Malas: %d", buenas2, malas2);
+			sprintf(letraActualLabel, "Letra Actual: %c", index_palabra2+65);
+			sprintf(descripcion, "%s", getDescripcion(index_palabra2));
+			//CHECK FIN JUEGO PX
+			if(buenas2 + malas2 == t_pal){
 				initInput();
-				index_palabra = (index_palabra +1) % t_pal;
-
+				if(buenas2 == t_pal){
+					updateTexts(buenasMalasLabel, letraActualLabel, "HAS GANADO!", inputText1);
+				}else{
+					char texto[200];
+					sprintf(texto, "Te han faltado %d palabras!", malas);
+					updateTexts(buenasMalasLabel, letraActualLabel, texto, inputText1);
+				}
 			}else{
-				updateTexts(buenasMalasLabel, letraActualLabel, descripcion, inputText1);
+				estado_palabras2[index_palabra2] = PALABRA_ACTUAL;
+
+				if(isReadyToEvaluate() == 1){
+
+					//getInputText y estado_palabras definidos en graphics.1.c
+					if(buena_mala(getInputText(),&buenas2, &malas2, &t_pal, index_palabra2, estado_palabras2) != 0){
+						if(buenas + malas != t_pal)
+							changeTurnoPlayer();
+					}
+					setReadyToEvaluate(0);
+					initInput();
+					if(buenas2 + malas2 != t_pal)//si aun esta en juego
+						while(estado_palabras2[index_palabra2 = (index_palabra2 +1) % t_pal] != PALABRA_PENDIENTE);
+				}else{
+					updateTexts(buenasMalasLabel, letraActualLabel, descripcion, inputText1);
+				}
 			}
 		}
 	}while(updateGUI() == 0);

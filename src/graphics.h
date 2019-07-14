@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 //Screen dimension constants
-#define SCREEN_WIDTH		640
+#define SCREEN_WIDTH		1280
 #define SCREEN_HEIGHT		528
 #define MAX_INPUT_LENGTH 200
 
@@ -32,6 +32,7 @@ int loadMedia();
 int updateGUI();
 
 extern int estado_palabras[];// = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+extern int estado_palabras2[];
 //Frees media and shuts down SDL
 void closeSDL();
 void loadTextures();
@@ -43,6 +44,11 @@ char* getInputText();
 void updateTexts(char*, char*, char*, char*);
 extern char inputText1[MAX_INPUT_LENGTH];
 void initInput();
+void setPlayerPassed(int);
+int getPlayerPassed();
+
+int getTurnoPLayer();
+void changeTurnoPlayer();
 
 //The window we'll be rendering to
 extern SDL_Window* gWindow;

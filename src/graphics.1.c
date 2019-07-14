@@ -3,6 +3,9 @@ and may not be redistributed without written permission.*/
 
 #include "./graphics.h"
 int estado_palabras[] ={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+int estado_palabras2[] ={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+int turnoPlayer = 0;
+int playerPassed = 0;
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 	
@@ -27,7 +30,6 @@ SDL_Texture* gIngresedWordTex = NULL;
 SDL_Surface* gCurrentLetter = NULL;
 SDL_Texture* gCurrentLetterTex = NULL;
 
-
 SDL_Surface* gDescripcion = NULL;
 SDL_Texture* gDescripcionTex = NULL;
 
@@ -39,10 +41,10 @@ char inputText1[MAX_INPUT_LENGTH] = "";
 int inputText1Pos = 0;
 int readyToEvaluate = 0;
 
-SDL_Rect rectBuenasMalas;
-SDL_Rect rectCurrentLetterText;
-SDL_Rect rectDescripcion;
-SDL_Rect rectIngresedText;
+SDL_Rect rectBuenasMalas,rectBuenasMalas2;
+SDL_Rect rectCurrentLetterText,rectCurrentLetterText2;
+SDL_Rect rectDescripcion,rectDescripcion2;
+SDL_Rect rectIngresedText,rectIngresedText2;
 
 int initSDL()
 {	
@@ -204,6 +206,9 @@ void handleKeyboard(SDL_Event e){
 			inputText1Pos--;
 			inputText1[inputText1Pos] = '\0';
 		break;
+		case SDLK_SPACE:
+			setPlayerPassed(1);
+		break;
 		default:
 			printf("otra tecla %c\n", e.key.keysym.sym);
 			if(e.key.keysym.sym >= 65 && e.key.keysym.sym <= 122){
@@ -214,6 +219,14 @@ void handleKeyboard(SDL_Event e){
 			}
 		break;
 	}
+}
+
+void setPlayerPassed(int i){
+	playerPassed = i;
+}
+
+int getPlayerPassed(){
+	return playerPassed;
 }
 
 int isReadyToEvaluate(){
@@ -255,31 +268,26 @@ void loadTextures(){
 	}
 	updateTexts("Puntaje...", "Letra actual...", "Descripcion....", "Texto Ingresado...");
 	// Setear los rectangulos donde se hara el render
-	rectBuenasMalas = (SDL_Rect){
-		.x = 0,
-		.y = 0,
-		.w = 150,
-		.h = gBuenasMalasWord->h
-	};
-	rectCurrentLetterText = (SDL_Rect){
-		.x = 0,
-		.y = 24,
-		.w = gCurrentLetter->w,
-		.h = gCurrentLetter->h
-	};
-	rectDescripcion = (SDL_Rect){
-		.x = 0,
-		.y = 480,
-		.w = SCREEN_WIDTH,
-		.h = gDescripcion->h
-	};
-	rectIngresedText = (SDL_Rect){
-		.x = SCREEN_WIDTH/2-(gIngresedWord->w)/2,
-		.y = SCREEN_HEIGHT/2-(gIngresedWord->h)/2,
-		.w = gIngresedWord->w,
-		.h = gIngresedWord->h
+	rectBuenasMalas = (SDL_Rect){.x = 0,.y = 0,.w = 150,.h = gBuenasMalasWord->h};
+	rectCurrentLetterText = (SDL_Rect){.x = 0,.y = 24,.w = gCurrentLetter->w,.h = gCurrentLetter->h};
+	rectDescripcion = (SDL_Rect){.x = 0,.y = 480,.w = SCREEN_WIDTH/2,.h = gDescripcion->h};
+	rectIngresedText = (SDL_Rect){.x = SCREEN_WIDTH/4-(gIngresedWord->w)/2,
+		.y = SCREEN_HEIGHT/2-(gIngresedWord->h)/2,.w = gIngresedWord->w,.h = gIngresedWord->h
+	};	//P2
+	rectBuenasMalas2 = (SDL_Rect){.x = 640,.y = 0,.w = 150,.h = gBuenasMalasWord->h};
+	rectCurrentLetterText2 = (SDL_Rect){.x = 640,.y = 24,.w = gCurrentLetter->w,.h = gCurrentLetter->h};
+	rectDescripcion2 = (SDL_Rect){.x = 640,.y = 480,.w = SCREEN_WIDTH/2,.h = gDescripcion->h};
+	rectIngresedText2 = (SDL_Rect){.x = SCREEN_WIDTH/4*3-(gIngresedWord->w)/2,
+		.y = SCREEN_HEIGHT/2-(gIngresedWord->h)/2,.w = gIngresedWord->w,.h = gIngresedWord->h
 	};	
 	
+}
+
+int getTurnoPLayer(){
+	return turnoPlayer;
+}
+void changeTurnoPlayer(){
+	turnoPlayer = (turnoPlayer+1)%2;
 }
 
 int updateGUI()
@@ -302,20 +310,15 @@ int updateGUI()
 		}
 	}
 
-	//Apply the image stretch parameters
-	SDL_Rect stretchRect;
-	stretchRect.x = 0;
-	stretchRect.y = 0;
-	stretchRect.w = SCREEN_WIDTH;
-	stretchRect.h = SCREEN_HEIGHT;
-
 	//Clear screen                
 	SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0x00 );
 	SDL_RenderClear( gRenderer );
 
-	SDL_Rect renderQuad = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-48 };
-	//RENDER BACKGROUND
+	SDL_Rect renderQuad = { 0, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT-48 };
+	SDL_Rect renderQuad2 = { 640, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT-48 };
+	//RENDER BACKGROUNDS
 	SDL_RenderCopy( gRenderer, gBackgroundTexture, NULL, &renderQuad );
+	SDL_RenderCopy( gRenderer, gBackgroundTexture, NULL, &renderQuad2 );
 
 	//RENDER CADA LETRA DE FORMA INDIVIDUAL, SI ES QUE YA FUE EVALUADA, APLICAR COLORMOD
 	for(int i = 0; i<CANTIDAD_LETRAS;i++){
@@ -331,11 +334,33 @@ int updateGUI()
 		}
 		SDL_RenderCopy( gRenderer, gCurrentTexture, NULL, &renderQuad );
 	}
-	//RENDER TEXTS
-	SDL_RenderCopy(gRenderer, gBuenasMalasWordTex, NULL, &rectBuenasMalas);
-	SDL_RenderCopy(gRenderer, gCurrentLetterTex, NULL, &rectCurrentLetterText);
-	SDL_RenderCopy(gRenderer, gDescripcionTex, NULL, &rectDescripcion);
-	SDL_RenderCopy(gRenderer, gIngresedWordTex, NULL, &rectIngresedText);
+	//LETRAS PLAYER2
+	for(int i = 0; i<CANTIDAD_LETRAS;i++){
+		gCurrentTexture = gTexturasLetras[i];
+		if(estado_palabras2[i]==PALABRA_MALA){
+			SDL_SetTextureColorMod( gCurrentTexture, 0xFF, 0x00, 0x00 );
+		}else if(estado_palabras2[i]==PALABRA_BUENA){
+			SDL_SetTextureColorMod( gCurrentTexture, 0x00, 0xFF, 0x00 );
+		}else if(estado_palabras2[i]==PALABRA_ACTUAL){
+			SDL_SetTextureColorMod( gCurrentTexture, 0xFF, 0xFF, 0xFF );
+		}else{
+			SDL_SetTextureColorMod( gCurrentTexture, 0x80, 0x80, 0x80 );
+		}
+		SDL_RenderCopy( gRenderer, gCurrentTexture, NULL, &renderQuad2 );
+	}
+	//RENDER TEXTS P1
+	if(getTurnoPLayer() == 0){
+		SDL_RenderCopy(gRenderer, gBuenasMalasWordTex, NULL, &rectBuenasMalas);
+		SDL_RenderCopy(gRenderer, gCurrentLetterTex, NULL, &rectCurrentLetterText);
+		SDL_RenderCopy(gRenderer, gDescripcionTex, NULL, &rectDescripcion);
+		SDL_RenderCopy(gRenderer, gIngresedWordTex, NULL, &rectIngresedText);
+	}else{
+		//TEXT P2
+		SDL_RenderCopy(gRenderer, gBuenasMalasWordTex, NULL, &rectBuenasMalas2);
+		SDL_RenderCopy(gRenderer, gCurrentLetterTex, NULL, &rectCurrentLetterText2);
+		SDL_RenderCopy(gRenderer, gDescripcionTex, NULL, &rectDescripcion2);
+		SDL_RenderCopy(gRenderer, gIngresedWordTex, NULL, &rectIngresedText2);
+	}
 
 
 	//Update screen
