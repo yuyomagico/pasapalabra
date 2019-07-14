@@ -10,3 +10,5 @@ int buena_mala(char* palabra, int* buenas, int* malas, int* t_pal, int index_pal
 int mostrar_palabra(char* palabra, int* buenas, int* malas, int* t_pal, int* index_palabra, int* estado_palabras);
 void filtrar_entrada_numerica(int*);
 char* getDescripcion(int);
+char* getDescripcion2(int);
+

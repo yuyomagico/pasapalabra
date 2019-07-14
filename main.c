@@ -141,7 +141,7 @@ int main(){
 		}else{
 			sprintf(buenasMalasLabel, "Buenas: %d, Malas: %d", buenas2, malas2);
 			sprintf(letraActualLabel, "Letra Actual: %c", index_palabra2+65);
-			sprintf(descripcion, "%s", getDescripcion(index_palabra2));
+			sprintf(descripcion, "%s", getDescripcion2(index_palabra2));
 			//CHECK FIN JUEGO PX
 			if(buenas2 + malas2 == t_pal || player2Status == 1){
 				initInput();

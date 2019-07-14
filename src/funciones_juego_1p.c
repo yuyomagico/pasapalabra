@@ -18,3 +18,6 @@ int buena_mala(char* palabra, int* buenas, int* malas, int* t_pal, int index_pal
 char* getDescripcion(int index){
 	return descripciones[index];
 }
+char* getDescripcion2(int index){
+	return descripciones2[index];
+}
