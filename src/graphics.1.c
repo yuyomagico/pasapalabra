@@ -6,9 +6,14 @@ int estado_palabras[] ={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 int estado_palabras2[] ={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 int turnoPlayer = 0;
 int playerPassed = 0;
+int player1Status = 0;
+int player2Status = 0;
+char player1Clock[50] = "2:00";
+char player2Clock[50] = "2:00";
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
-	
+
+
 //The surface contained by the window
 SDL_Surface* gScreenSurface = NULL;
 
@@ -44,6 +49,12 @@ SDL_Surface* gBuenasMalasWord2 = NULL;
 SDL_Texture* gBuenasMalasWordTex = NULL;
 SDL_Texture* gBuenasMalasWordTex2 = NULL;
 
+
+SDL_Surface* gTimer1Sur = NULL;
+SDL_Texture* gTimer1Tex = NULL;
+SDL_Surface* gTimer2Sur = NULL;
+SDL_Texture* gTimer2Tex = NULL;
+
 TTF_Font* Sans = NULL;
 char inputText1[MAX_INPUT_LENGTH] = "";
 int inputText1Pos = 0;
@@ -53,6 +64,8 @@ SDL_Rect rectBuenasMalas,rectBuenasMalas2;
 SDL_Rect rectCurrentLetterText,rectCurrentLetterText2;
 SDL_Rect rectDescripcion,rectDescripcion2;
 SDL_Rect rectIngresedText,rectIngresedText2;
+SDL_Rect rectTimer1,rectTimer2;
+
 
 int initSDL()
 {	
@@ -179,6 +192,9 @@ void closeSDL()
 	SDL_FreeSurface(gDescripcion2);
 	SDL_FreeSurface(gIngresedWord2);
 
+	SDL_FreeSurface(gTimer1Sur);
+	SDL_FreeSurface(gTimer2Sur);
+
 	SDL_DestroyTexture( gBuenasMalasWordTex );
 	gBuenasMalasWordTex = NULL;
 	SDL_DestroyTexture( gCurrentLetterTex );
@@ -196,6 +212,11 @@ void closeSDL()
 	gDescripcionTex2 = NULL;
 	SDL_DestroyTexture( gIngresedWordTex2 );
 	gIngresedWordTex2 = NULL;
+
+	SDL_DestroyTexture( gTimer1Tex );
+	gTimer1Tex = NULL;
+	SDL_DestroyTexture( gTimer2Tex );
+	gTimer2Tex = NULL;
 
 	//Destroy window
 	SDL_DestroyRenderer(gRenderer);
@@ -267,28 +288,36 @@ void initInput(){
 
 void updateTexts(char* buenasMalas, char* letraActual, char* descripcion, char* textoIngresado){
 	SDL_Color Black = {0, 0, 0}; 
+	//Primero se crea una SDL_Surface*, con tipo de fuente, texto y color
+	gBuenasMalasWord = TTF_RenderText_Solid(Sans, buenasMalas, Black);
+	gCurrentLetter = TTF_RenderText_Solid(Sans, letraActual, Black);
+	gDescripcion = TTF_RenderText_Solid(Sans, descripcion, Black);
+	gIngresedWord = TTF_RenderText_Solid(Sans, textoIngresado, Black);
+
+	gTimer1Sur = TTF_RenderText_Solid(Sans, player1Clock, Black);
+	//Primero se crea una SDL_Surface*, con tipo de fuente, texto y color
+	gBuenasMalasWord2 = TTF_RenderText_Solid(Sans, buenasMalas, Black);
+	gCurrentLetter2 = TTF_RenderText_Solid(Sans, letraActual, Black);
+	gDescripcion2 = TTF_RenderText_Solid(Sans, descripcion, Black);
+	gIngresedWord2 = TTF_RenderText_Solid(Sans, textoIngresado, Black);
+
+	gTimer2Sur = TTF_RenderText_Solid(Sans, player2Clock, Black);
 	if(getTurnoPLayer() == 0){
-		//Primero se crea una SDL_Surface*, con tipo de fuente, texto y color
-		gBuenasMalasWord = TTF_RenderText_Solid(Sans, buenasMalas, Black);
-		gCurrentLetter = TTF_RenderText_Solid(Sans, letraActual, Black);
-		gDescripcion = TTF_RenderText_Solid(Sans, descripcion, Black);
-		gIngresedWord = TTF_RenderText_Solid(Sans, textoIngresado, Black);
 		//Luego se crea una SDL_Texture a partir de la SDL_Surface creada en el paso anterior.
 		gBuenasMalasWordTex = SDL_CreateTextureFromSurface(gRenderer, gBuenasMalasWord);
 		gCurrentLetterTex = SDL_CreateTextureFromSurface(gRenderer, gCurrentLetter);
 		gDescripcionTex = SDL_CreateTextureFromSurface(gRenderer, gDescripcion);
 		gIngresedWordTex = SDL_CreateTextureFromSurface(gRenderer, gIngresedWord);
+
+		gTimer1Tex = SDL_CreateTextureFromSurface(gRenderer, gTimer1Sur);
 	}else{
-		//Primero se crea una SDL_Surface*, con tipo de fuente, texto y color
-		gBuenasMalasWord2 = TTF_RenderText_Solid(Sans, buenasMalas, Black);
-		gCurrentLetter2 = TTF_RenderText_Solid(Sans, letraActual, Black);
-		gDescripcion2 = TTF_RenderText_Solid(Sans, descripcion, Black);
-		gIngresedWord2 = TTF_RenderText_Solid(Sans, textoIngresado, Black);
 
 		gBuenasMalasWordTex2 = SDL_CreateTextureFromSurface(gRenderer, gBuenasMalasWord2);
 		gCurrentLetterTex2 = SDL_CreateTextureFromSurface(gRenderer, gCurrentLetter2);
 		gDescripcionTex2 = SDL_CreateTextureFromSurface(gRenderer, gDescripcion2);
 		gIngresedWordTex2 = SDL_CreateTextureFromSurface(gRenderer, gIngresedWord2);
+
+		gTimer2Tex = SDL_CreateTextureFromSurface(gRenderer, gTimer2Sur);
 	}
 	
 }
@@ -316,7 +345,13 @@ void loadTextures(){
 	rectIngresedText2 = (SDL_Rect){.x = SCREEN_WIDTH/4*3-(gIngresedWord->w)/2,
 		.y = SCREEN_HEIGHT/2-(gIngresedWord->h)/2,.w = gIngresedWord->w,.h = gIngresedWord->h
 	};	
-	
+
+	rectTimer1 = (SDL_Rect){.x = SCREEN_WIDTH/2-(gTimer1Sur->w),
+		.y = 0,.w = gTimer1Sur->w,.h = gTimer1Sur->h
+	};
+	rectTimer2 = (SDL_Rect){.x = SCREEN_WIDTH-(gTimer2Sur->w),
+		.y = 0,.w = gTimer2Sur->w,.h = gTimer2Sur->h
+	};
 }
 
 int getTurnoPLayer(){
@@ -384,19 +419,26 @@ int updateGUI()
 		}
 		SDL_RenderCopy( gRenderer, gCurrentTexture, NULL, &renderQuad2 );
 	}
+
 	//RENDER TEXTS P1
 	SDL_RenderCopy(gRenderer, gBuenasMalasWordTex, NULL, &rectBuenasMalas);
 	SDL_RenderCopy(gRenderer, gCurrentLetterTex, NULL, &rectCurrentLetterText);
 	SDL_RenderCopy(gRenderer, gIngresedWordTex, NULL, &rectIngresedText);
+
+	SDL_RenderCopy(gRenderer, gTimer1Tex, NULL, &rectTimer1);
 	//TEXT P2
 	SDL_RenderCopy(gRenderer, gBuenasMalasWordTex2, NULL, &rectBuenasMalas2);
 	SDL_RenderCopy(gRenderer, gCurrentLetterTex2, NULL, &rectCurrentLetterText2);
 	SDL_RenderCopy(gRenderer, gIngresedWordTex2, NULL, &rectIngresedText2);
+	
+	SDL_RenderCopy(gRenderer, gTimer2Tex, NULL, &rectTimer2);
 
-	if(getTurnoPLayer()==0)
+	if(getTurnoPLayer()==0){
 		SDL_RenderCopy(gRenderer, gDescripcionTex, NULL, &rectDescripcion);
-	else
+	}
+	else{
 		SDL_RenderCopy(gRenderer, gDescripcionTex2, NULL, &rectDescripcion2);
+	}
 
 	//Update screen
 	SDL_RenderPresent( gRenderer );

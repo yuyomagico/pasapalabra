@@ -33,6 +33,10 @@ int updateGUI();
 
 extern int estado_palabras[];// = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 extern int estado_palabras2[];
+extern int player1Status;
+extern int player2Status;
+extern char player1Clock[50];
+extern char player2Clock[50];
 //Frees media and shuts down SDL
 void closeSDL();
 void loadTextures();
