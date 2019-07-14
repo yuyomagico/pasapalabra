@@ -246,7 +246,9 @@ void handleKeyboard(SDL_Event e){
 			inputText1Pos = 0;
 		break;
 		case SDLK_BACKSPACE:
-			inputText1Pos--;
+			if(inputText1Pos > 0)
+				inputText1Pos--;
+				
 			inputText1[inputText1Pos] = '\0';
 		break;
 		case SDLK_SPACE:
