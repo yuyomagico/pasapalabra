@@ -15,6 +15,20 @@ int buena_mala(char* palabra, int* buenas, int* malas, int* t_pal, int index_pal
 		return 1;
 	}
 }
+int buena_mala2(char* palabra, int* buenas, int* malas, int* t_pal, int index_palabra, int* estado_palabras){
+	if(strncmp(palabras2[index_palabra],palabra,200)==0){
+		printf("Correcto!!!\n");
+		*buenas=*buenas+1;
+		estado_palabras[index_palabra] = 1;
+		return 0;
+	}else{
+		printf("Incorrecto\n");
+		*malas=*malas+1;
+		estado_palabras[index_palabra] = 2;
+		return 1;
+	}
+}
+
 char* getDescripcion(int index){
 	return descripciones[index];
 }

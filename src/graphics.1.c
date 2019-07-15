@@ -384,7 +384,6 @@ int updateGUI()
 	}
 
 	//Clear screen                
-	SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0x00 );
 	SDL_RenderClear( gRenderer );
 
 	SDL_Rect renderQuad = { 0, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT-48 };

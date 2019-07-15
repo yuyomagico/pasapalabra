@@ -164,7 +164,7 @@ int main(){
 				if(isReadyToEvaluate() == 1){
 
 					//getInputText y estado_palabras definidos en graphics.1.c
-					if(buena_mala(getInputText(),&buenas2, &malas2, &t_pal, index_palabra2, estado_palabras2) != 0){
+					if(buena_mala2(getInputText(),&buenas2, &malas2, &t_pal, index_palabra2, estado_palabras2) != 0){
 						if(buenas + malas != t_pal){
 							changeTurnoPlayer();
 							lastTicksP2 = SDL_GetTicks();
