@@ -241,7 +241,7 @@ void RenderClocks(){
 void RenderDescription(){
 	char text[50];
 	sprintf(text, "%s", (char*)players[GetCurrentPlayerTurn()].myDictionary[players[GetCurrentPlayerTurn()].letraActualIndex].meaning);
-	RenderText(text, GetCurrentPlayerTurn()*PLAYER_SCREEN_WIDTH, PLAYER_SCREEN_HEIGHT-FONT_SIZE);
+	RenderTextCentered(text, PLAYER_SCREEN_WIDTH, PLAYER_SCREEN_HEIGHT-FONT_SIZE);
 }
 
 void RenderInput(){
