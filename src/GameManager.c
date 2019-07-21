@@ -75,20 +75,17 @@ void ProcessInputs(){
         }else{
             players[playerTurn].buenas++;
             players[playerTurn].estadoPalabras[players[playerTurn].letraActualIndex] = PALABRA_BUENA;
+		
 
             if(players[playerTurn].malas + players[playerTurn].buenas == CANTIDAD_LETRAS){
                 players[playerTurn].isActive = 0;
+                GetNextActivePlayer();
             }else{
-                if(players[playerTurn].buenas == CANTIDAD_LETRAS){
-                    players[playerTurn].ganador = 1;
-                    FinishGame();
+                int nextLetter = IndexOfNextPendingWord();
+                if( nextLetter != -1){
+                    players[playerTurn].letraActualIndex = nextLetter;
                 }else{
-                    int nextLetter = IndexOfNextPendingWord();
-                    if( nextLetter != -1){
-                        players[playerTurn].letraActualIndex = nextLetter;
-                    }else{
-                        GetNextActivePlayer();
-                    }
+                    GetNextActivePlayer();
                 }
             }
         }
