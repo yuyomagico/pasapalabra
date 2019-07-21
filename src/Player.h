@@ -13,14 +13,13 @@ typedef struct player {
     char name[PLAYER_NAME_LENGTH];
     int elapsedTime;
     int estadoPalabras[CANTIDAD_LETRAS];
-    char clock[20];
-    char* palabras[CANTIDAD_LETRAS];
-    char* descripciones[CANTIDAD_LETRAS];
     int buenas;
     int malas;
     int ganador;
     int letraActualIndex;
     int isActive;
+    char clock[20];
+    WordEntry* myDictionary;
 } Player;
 
 Player InitPlayer(char*);

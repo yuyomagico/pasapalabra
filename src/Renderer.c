@@ -122,10 +122,15 @@ int LoadFonts(){
 void CleanResources(){
 	
 	//Free Letter Textures
-	for( int i = 0; i < CANTIDAD_LETRAS; ++i )
+	for( int i = 0; i < CANTIDAD_LETRAS; i++ )
 	{
 		SDL_DestroyTexture( gTexturasLetras[ i ] );
 		gTexturasLetras[ i ] = NULL;
+	}
+	//Free Dictionaries
+	for( int p = 0; p < MAX_PLAYERS; p++ )
+	{
+		free(players[p].myDictionary);
 	}
 
 	SDL_DestroyTexture(gBackgroundTexture);
@@ -235,7 +240,7 @@ void RenderClocks(){
 
 void RenderDescription(){
 	char text[50];
-	sprintf(text, "%s", players[GetCurrentPlayerTurn()].descripciones[players[GetCurrentPlayerTurn()].letraActualIndex]);
+	sprintf(text, "%s", (char*)players[GetCurrentPlayerTurn()].myDictionary[players[GetCurrentPlayerTurn()].letraActualIndex].meaning);
 	RenderText(text, GetCurrentPlayerTurn()*PLAYER_SCREEN_WIDTH, PLAYER_SCREEN_HEIGHT-FONT_SIZE);
 }
 

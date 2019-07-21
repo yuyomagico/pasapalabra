@@ -36,10 +36,16 @@ int PlayGame(){
 }
 
 void InitPlayers(){
+    printf("POOP2");
     for(int p=0; p<MAX_PLAYERS;p++){
+        printf("POOP3");
         players[p] = InitPlayer("playerX");
         //TODO: Assign Real Words
-        AssignSampleWords(players[p].palabras, players[p].descripciones, p);
+        players[p].myDictionary = LoadTestDictionary(p);
+        
+         for(int i=0; i<CANTIDAD_LETRAS;i++){
+            printf("%s\n", players[p].myDictionary[i].meaning);
+        }
     }
 }
 
@@ -53,7 +59,7 @@ int GetCurrentPlayerTurn(){
 void ProcessInputs(){
     int playerTurn = GetCurrentPlayerTurn();
     if(GetReadyToEvaluate() == 1){
-        if(strcmp(GetInputText(), players[playerTurn].palabras[players[playerTurn].letraActualIndex]) != 0){
+        if(strcmp(GetInputText(), players[playerTurn].myDictionary[players[playerTurn].letraActualIndex].word) != 0){
             //mala
             players[playerTurn].malas++;
             players[playerTurn].estadoPalabras[players[playerTurn].letraActualIndex] = PALABRA_MALA;

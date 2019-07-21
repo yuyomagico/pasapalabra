@@ -8,8 +8,8 @@
 #ifndef CANTIDAD_LETRAS
   #define CANTIDAD_LETRAS 26
 #endif
-#define MAX_WORD_LENGTH 100
-#define MAX_DESCR_LENGTH 500
+#define MAX_WORD_LENGTH 	50
+#define MAX_DESCR_LENGTH 	500
 
 //Posibles estados de una palabra
 enum EstadosPalabra
@@ -21,14 +21,14 @@ enum EstadosPalabra
 };
 
 typedef struct wordEntry {
-  char word[MAX_WORD_LENGTH];
-  char meaning[MAX_DESCR_LENGTH];
+  char* word;
+  char* meaning;
 } WordEntry;
 
-extern WordEntry MyDictionary[CANTIDAD_LETRAS][2];
+extern WordEntry** MyDictionary;
 
 int LoadDictionary();
-int LoadTestDictionary();
-void AssignSampleWords(char*[CANTIDAD_LETRAS], char*[CANTIDAD_LETRAS], int);
+WordEntry* LoadTestDictionary(int);
+WordEntry** GetSampleDictionary();
 
 #endif
