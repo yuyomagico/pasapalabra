@@ -8,7 +8,7 @@
 #include "InputManager.h"
 
 #define MAX_PLAYERS 2
-#define MAX_TIME    12000
+#define MAX_TIME    120000
 
 extern Player players[MAX_PLAYERS];
 extern int gameOver;
