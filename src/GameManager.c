@@ -41,9 +41,9 @@ void InitPlayers(){
         //TODO: Assign Real Words
         players[p].myDictionary = LoadTestDictionary(p);
         
-         for(int i=0; i<CANTIDAD_LETRAS;i++){
-            printf("%s\n", players[p].myDictionary[i].meaning);
-        }
+         //for(int i=0; i<CANTIDAD_LETRAS;i++){
+            //printf("%s\n", players[p].myDictionary[i].meaning);
+        //}
     }
 }
 

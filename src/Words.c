@@ -21,7 +21,7 @@ WordEntry* LoadTestDictionary(int players){
             strcpy(MyNewDictionary[i].word , testWords2[i]);
             strcpy(MyNewDictionary[i].meaning , testDefs2[i]);
         }
-        printf("%s: %s\n", MyNewDictionary[i].word, MyNewDictionary[i].meaning);
+        //printf("%s: %s\n", MyNewDictionary[i].word, MyNewDictionary[i].meaning);
     }
     return MyNewDictionary;
 }
