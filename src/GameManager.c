@@ -180,33 +180,49 @@ void FinishGame(){
     }
 
     //si no hay ganadores, chequear el mas buenas
-    int maxBuenasIndex = 0;
-    int cantPlayersMax = 0;
+    int maxBuenasIndex = -1;
     for(int p=0; p<MAX_PLAYERS-1; p++){
-        if(players[p+1].buenas > players[maxBuenasIndex].buenas){
-            maxBuenasIndex = p;
-            cantPlayersMax++;
+        if(maxBuenasIndex != -1){
+            if(players[p].buenas > players[maxBuenasIndex].buenas){
+                maxBuenasIndex = p;
+            }
+        }else{
+            if(players[p+1].buenas > players[p].buenas){
+                maxBuenasIndex = p+1;
+            }else if(players[p+1].buenas < players[p].buenas){
+                maxBuenasIndex = p;
+            }else{
+                //estan iguales
+            }
         }
     }
-    if(cantPlayersMax == 1){
+    if(maxBuenasIndex != -1){
         SetWinner(maxBuenasIndex);
         return;
     }
     //si no hay mas buenas, chequear menos malas
-    int menosMalasIndex = 0;
-    int cantPlayersMin = 0;
+    int menosMalasIndex = -1;
     for(int p=0; p<MAX_PLAYERS-1; p++){
-        if(players[p+1].malas < players[menosMalasIndex].malas){
-            menosMalasIndex = p;
-            cantPlayersMin++;
+        if(menosMalasIndex != -1){
+            if(players[p].malas < players[menosMalasIndex].malas){
+                menosMalasIndex = p;
+            }
+        }else{
+            if(players[p+1].malas < players[p].malas){
+                menosMalasIndex = p+1;
+            }else if(players[p+1].malas > players[p].malas){
+                menosMalasIndex = p;
+            }else{
+                //estan iguales
+            }
         }
     }
-    if(cantPlayersMin == 1){
+    if(menosMalasIndex == 1){
         SetWinner(menosMalasIndex);
         return;
     }
 
-    //si no hay menos malas, declarar empate
+    //si no hay menos malas ni mas buenas, declarar empate
     SetWinner(-1);
 }
 
