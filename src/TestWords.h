@@ -2,7 +2,7 @@ char* testWords[CANTIDAD_LETRAS] = {"arreglo", "byte", "compilador", "double", "
     "gigabyte", "hardware", "int", "java", "kilobyte", "lag", "malware", "navegador",
     "octal", "password", "qwerty", "ram", "stack", "teclado", "ubuntu", "variable", "web", "x", "youtube", "zip"};
 
-char* testWords2[CANTIDAD_LETRAS] = {"arreglo", "byte", "compilador", "double", "estructura", "float",
+char* testWords2[CANTIDAD_LETRAS] = {"arreglo2", "byte", "compilador", "double", "estructura", "float",
     "gigabyte", "hardware", "int", "java", "kilobyte", "lag", "malware", "navegador",
     "octal", "password", "qwerty", "ram", "stack", "teclado", "ubuntu", "variable", "web", "x", "youtube", "zip"};
 

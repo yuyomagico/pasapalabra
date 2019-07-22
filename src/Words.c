@@ -17,7 +17,7 @@ WordEntry* LoadTestDictionary(int players){
     for(int i=0;i<CANTIDAD_LETRAS;i++){
         if(players == 0){
             MyNewDictionary[i].word = testWords[i];
-            MyNewDictionary[i].meaning = testDefs2[i];
+            MyNewDictionary[i].meaning = testDefs[i];
         }else{
             MyNewDictionary[i].word = testWords2[i];
             MyNewDictionary[i].meaning = testDefs2[i];
