@@ -16,11 +16,11 @@ WordEntry* LoadTestDictionary(int players){
     printf("poop\n");
     for(int i=0;i<CANTIDAD_LETRAS;i++){
         if(players == 0){
-            MyNewDictionary[i].word = testWords[i];
-            MyNewDictionary[i].meaning = testDefs[i];
+            strcpy(MyNewDictionary[i].word, testWords[i]);
+            strcpy(MyNewDictionary[i].meaning , testDefs[i]);
         }else{
-            MyNewDictionary[i].word = testWords2[i];
-            MyNewDictionary[i].meaning = testDefs2[i];
+            strcpy(MyNewDictionary[i].word , testWords2[i]);
+            strcpy(MyNewDictionary[i].meaning , testDefs2[i]);
         }
         printf("%s: %s\n", MyNewDictionary[i].word, MyNewDictionary[i].meaning);
     }

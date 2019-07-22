@@ -21,8 +21,8 @@ enum EstadosPalabra
 };
 
 typedef struct wordEntry {
-  char* word;
-  char* meaning;
+  char word[MAX_WORD_LENGTH];
+  char meaning[MAX_DESCR_LENGTH];
 } WordEntry;
 
 extern WordEntry** MyDictionary;

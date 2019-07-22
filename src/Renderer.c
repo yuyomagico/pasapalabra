@@ -239,13 +239,13 @@ void RenderClocks(){
 }
 
 void RenderDescription(){
-	char text[50];
+	char text[MAX_DESCR_LENGTH];
 	sprintf(text, "%s", (char*)players[GetCurrentPlayerTurn()].myDictionary[players[GetCurrentPlayerTurn()].letraActualIndex].meaning);
 	RenderTextCentered(text, PLAYER_SCREEN_WIDTH, PLAYER_SCREEN_HEIGHT-FONT_SIZE);
 }
 
 void RenderInput(){
-	char text[50];
+	char text[MAX_INPUT_LENGTH];
 	sprintf(text, "%s", GetInputText());//
 	RenderTextCentered(text, GetCurrentPlayerTurn()*PLAYER_SCREEN_WIDTH + PLAYER_SCREEN_WIDTH/2, (int)PLAYER_SCREEN_HEIGHT/2);
 }
