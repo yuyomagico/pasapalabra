@@ -9,10 +9,6 @@ SDL_Renderer* gRenderer;
 SDL_Texture* gBackgroundTexture;
 SDL_Texture* gTexturasLetras[CANTIDAD_LETRAS];
 
-SDL_Rect gScoresRects[MAX_PLAYERS];
-SDL_Rect gCurrentLetterRects[MAX_PLAYERS];
-SDL_Rect gDescriptionsRects[MAX_PLAYERS];
-
 //TTF
 TTF_Font* Sans = NULL;
 
@@ -73,13 +69,6 @@ int CreateResources(){
 	if(LoadTextures() != 0 || LoadFonts() != 0){
 		return 1;
 	}else{
-
-		for(int i = 0; i<MAX_PLAYERS; i++){
-			gScoresRects[i] = (SDL_Rect) {PLAYER_SCREEN_WIDTH*i, 0, 100, FONT_SIZE};
-			gCurrentLetterRects[i] = (SDL_Rect){PLAYER_SCREEN_WIDTH*i, FONT_SIZE*i, 100, FONT_SIZE};
-			gDescriptionsRects[i] = (SDL_Rect){PLAYER_SCREEN_WIDTH*i, PLAYER_SCREEN_HEIGHT-FONT_SIZE, 100, FONT_SIZE};
-		}
-
 		return 0;
 	}
 }
