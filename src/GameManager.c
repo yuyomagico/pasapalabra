@@ -36,9 +36,7 @@ int PlayGame(){
 }
 
 void InitPlayers(){
-    printf("POOP2");
     for(int p=0; p<MAX_PLAYERS;p++){
-        printf("POOP3");
         players[p] = InitPlayer("playerX");
         //TODO: Assign Real Words
         players[p].myDictionary = LoadTestDictionary(p);

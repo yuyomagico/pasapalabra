@@ -13,7 +13,6 @@ int LoadDictionary(){
 //Test data Dictionary
 WordEntry* LoadTestDictionary(int players){
     WordEntry* MyNewDictionary = (WordEntry*) malloc(CANTIDAD_LETRAS*sizeof(WordEntry));
-    printf("poop\n");
     for(int i=0;i<CANTIDAD_LETRAS;i++){
         if(players == 0){
             strcpy(MyNewDictionary[i].word, testWords[i]);
@@ -24,7 +23,6 @@ WordEntry* LoadTestDictionary(int players){
         }
         printf("%s: %s\n", MyNewDictionary[i].word, MyNewDictionary[i].meaning);
     }
-    printf("poop1\n");
     return MyNewDictionary;
 }
 
